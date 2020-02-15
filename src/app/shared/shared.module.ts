@@ -13,9 +13,10 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {DeleteButtonComponent} from './delete-button/delete-button.component';
 
 
-const components = [ShellComponent];
+const components = [ShellComponent, DeleteButtonComponent];
 
 const modules = [
   CommonModule,

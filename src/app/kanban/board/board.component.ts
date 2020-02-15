@@ -46,4 +46,8 @@ export class BoardComponent {
       }
     });
   }
+
+  handelDelete() {
+    this.boardService.deleteBoard(this.board.id);
+  }
 }
