@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "kanban-board-angular9": {
+      "hosting": {
+        "kanban-board": [
+          "kanban-board-angular9"
+        ]
+      }
+    }
+  }
+}
