@@ -38,7 +38,7 @@ import { BoardEffects } from './effects/board.effects';
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([BoardEffects])
+    EffectsModule.forRoot([BoardEffects, ])
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,13 +4,17 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Board, Task} from './board.model';
 import * as firebase from 'firebase/app';
 import {switchMap} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {createBoard, deleteBoard, loadBoards} from '../actions/board.actions';
+import {Observable} from 'rxjs';
+import {selectBoard, State} from '../store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
 
-  constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
+  constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private store: Store<State>) {
   }
 
   /**
@@ -18,21 +22,20 @@ export class BoardService {
    */
   createBoard(data: Board) {
     const user = this.afAuth.auth.currentUser;
-    return this.db.collection('boards').add({
-      ...data,
-      uid: user.uid,
-      tasks: [{description: 'Hello!', label: 'yellow'}]
-    });
+    this.store.dispatch(createBoard(
+      {
+        board: {
+          ...data, uid: user.uid,
+          tasks: [{description: 'Hello!', label: 'yellow'}]
+        }
+      }));
   }
 
   /**
    * Delete board
    */
   deleteBoard(boardId: string) {
-    return this.db
-      .collection('boards')
-      .doc(boardId)
-      .delete();
+    this.store.dispatch(deleteBoard({boardId}));
   }
 
   /**
@@ -60,15 +63,12 @@ export class BoardService {
   /**
    * Get all boards owned by current user
    */
-  getUserBoards() {
+  getUserBoards(): Observable<Board[]> {
     return this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.db
-            .collection<Board>('boards', ref =>
-              ref.where('uid', '==', user.uid).orderBy('priority')
-            )
-            .valueChanges({idField: 'id'});
+          this.store.dispatch(loadBoards({uid: user.uid}));
+          return this.store.select(selectBoard);
         } else {
           return [];
         }

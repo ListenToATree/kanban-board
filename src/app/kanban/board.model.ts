@@ -3,6 +3,7 @@ export interface Board {
   title?: string;
   priority?: number;
   tasks?: Task[];
+  uid?: string;
 }
 
 export interface Task {
