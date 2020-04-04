@@ -10,8 +10,9 @@ import {AngularFireModule} from '@angular/fire';
 import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import {StoreModule} from '@ngrx/store';
+import {reducers, metaReducers} from './store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,13 @@ import { reducers, metaReducers } from './reducers';
     AngularFirestoreModule,
     AngularFireAuthModule,
     StoreModule.forRoot(reducers, {
-      metaReducers
-    })
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+      }
+    }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [],
   bootstrap: [AppComponent]
