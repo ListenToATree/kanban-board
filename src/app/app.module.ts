@@ -13,6 +13,8 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {StoreModule} from '@ngrx/store';
 import {reducers, metaReducers} from './store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { BoardEffects } from './effects/board.effects';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
       }
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([BoardEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
