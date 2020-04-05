@@ -5,6 +5,7 @@ import {BoardService} from '../board.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatDialog} from '@angular/material/dialog';
 import {BoardDialogComponent} from '../dialogs/board-dialog.component';
+import {cloneDeep} from 'lodash';
 
 @Component({
   selector: 'app-board-list',
@@ -20,7 +21,7 @@ export class BoardListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sub = this.boardService.getUserBoards().subscribe(
-      boards => this.boards = boards
+      boards => this.boards = cloneDeep(boards)
     );
   }
 

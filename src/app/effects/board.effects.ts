@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {createBoard, deleteBoard, loadBoards, loadBoardsFailure, loadBoardsSuccess} from '../actions/board.actions';
+import {createBoard, deleteBoard, loadBoards, loadBoardsFailure, loadBoardsSuccess, updateTask} from '../actions/board.actions';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {of} from 'rxjs';
@@ -29,5 +29,10 @@ export class BoardEffects {
   deleteBoard$ = createEffect(() => this.actions$.pipe(
     ofType(deleteBoard),
     mergeMap((action) => this.firebase.collection('boards').doc(action.boardId).delete())),
+    {dispatch: false});
+
+  updateTask$ = createEffect(() => this.actions$.pipe(
+    ofType(updateTask),
+    mergeMap((action) => this.firebase.collection('boards').doc(action.boardId).update({tasks: action.tasks}))),
     {dispatch: false});
 }

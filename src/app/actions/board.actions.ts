@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Board} from '../kanban/board.model';
+import {Board, Task} from '../kanban/board.model';
 
 export const loadBoards = createAction(
   '[Board] Load Boards',
@@ -21,6 +21,11 @@ export const createBoard = createAction(
 );
 
 export const deleteBoard = createAction(
-  '[Board] delete Board',
+  '[Board] Delete Board',
   props<{ boardId: string }>()
+);
+
+export const updateTask = createAction(
+  '[Board] Update Task',
+  props<{ boardId: string, tasks: Task[] }>()
 );

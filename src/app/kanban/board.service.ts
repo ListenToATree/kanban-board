@@ -5,7 +5,7 @@ import {Board, Task} from './board.model';
 import * as firebase from 'firebase/app';
 import {switchMap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
-import {createBoard, deleteBoard, loadBoards} from '../actions/board.actions';
+import {createBoard, deleteBoard, loadBoards, updateTask} from '../actions/board.actions';
 import {Observable} from 'rxjs';
 import {selectBoard, State} from '../store';
 
@@ -42,10 +42,7 @@ export class BoardService {
    * Updates the tasks on board
    */
   updateTasks(boardId: string, tasks: Task[]) {
-    return this.db
-      .collection('boards')
-      .doc(boardId)
-      .update({tasks});
+    this.store.dispatch(updateTask({boardId, tasks}));
   }
 
   /**
