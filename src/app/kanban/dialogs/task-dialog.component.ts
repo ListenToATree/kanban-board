@@ -30,7 +30,9 @@ import {BoardService} from '../board.service';
       <button mat-button [mat-dialog-close]="data" cdkFocusInitial>
         {{ data.isNew ? 'Add Task' : 'Update Task' }}
       </button>
-
+      <button mat-button (click)="handleTaskDelete()">
+        Remove Task
+      </button>
     </div>
   `,
   styleUrls: ['./dialog.scss']

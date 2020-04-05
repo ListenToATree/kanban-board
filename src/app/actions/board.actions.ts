@@ -29,3 +29,8 @@ export const updateTask = createAction(
   '[Board] Update Task',
   props<{ boardId: string, tasks: Task[] }>()
 );
+
+export const removeTask = createAction(
+  '[Board] Remove Task',
+  props<{ boardId: string, task: Task }>()
+);
