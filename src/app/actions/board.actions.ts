@@ -26,11 +26,21 @@ export const deleteBoard = createAction(
 );
 
 export const updateTask = createAction(
-  '[Board] Update Task',
+  '[Task] Update Task',
   props<{ boardId: string, tasks: Task[] }>()
 );
 
 export const removeTask = createAction(
-  '[Board] Remove Task',
+  '[Task] Remove Task',
   props<{ boardId: string, task: Task }>()
+);
+
+export const sortBoards = createAction(
+  '[Board] Sort Boards',
+  props<{ boards: Board[] }>()
+);
+
+export const updateEachBoard = createAction(
+  '[Board] Update Each Board',
+  props<{ boardId: string, idx: number }>()
 );

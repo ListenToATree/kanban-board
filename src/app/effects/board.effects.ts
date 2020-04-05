@@ -1,9 +1,19 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {createBoard, deleteBoard, loadBoards, loadBoardsFailure, loadBoardsSuccess, removeTask, updateTask} from '../actions/board.actions';
-import {catchError, map, mergeMap} from 'rxjs/operators';
+import {
+  createBoard,
+  deleteBoard,
+  loadBoards,
+  loadBoardsFailure,
+  loadBoardsSuccess,
+  removeTask,
+  sortBoards,
+  updateEachBoard,
+  updateTask
+} from '../actions/board.actions';
+import {catchError, map, mergeMap, switchMap} from 'rxjs/operators';
 import {AngularFirestore} from '@angular/fire/firestore';
-import {of} from 'rxjs';
+import {from, of} from 'rxjs';
 import * as firebase from 'firebase/app';
 
 
@@ -41,5 +51,22 @@ export class BoardEffects {
     ofType(removeTask),
     mergeMap((action) => this.fireStore.collection('boards').doc(action.boardId).update(
       {tasks: firebase.firestore.FieldValue.arrayRemove(action.task)}))),
+    {dispatch: false});
+
+
+  batch = firebase.firestore().batch();
+
+  sortBoards$ = createEffect(() => this.actions$.pipe(
+    ofType(sortBoards),
+    switchMap(({boards}) => {
+      const newArray = [];
+      boards.forEach((board, idx) => newArray[idx] = {boardId: board.id, idx});
+      return from(newArray);
+    }),
+    map(({boardId, idx}) => updateEachBoard({boardId, idx}))));
+
+  updateBoard$ = createEffect(() => this.actions$.pipe(
+    ofType(updateEachBoard),
+    mergeMap(({boardId, idx}) => this.fireStore.collection('boards').doc(boardId).update({priority: idx}))),
     {dispatch: false});
 }

@@ -2,10 +2,9 @@ import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Board, Task} from './board.model';
-import * as firebase from 'firebase/app';
 import {switchMap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
-import {createBoard, deleteBoard, loadBoards, updateTask, removeTask} from '../actions/board.actions';
+import {createBoard, deleteBoard, loadBoards, removeTask, updateTask, sortBoards} from '../actions/board.actions';
 import {Observable} from 'rxjs';
 import {selectBoard, State} from '../store';
 
@@ -72,11 +71,7 @@ export class BoardService {
    * Run a batch write to change the priority of each board for sorting
    */
   sortBoards(boards: Board[]) {
-    const db = firebase.firestore();
-    const batch = db.batch();
-    const refs = boards.map(b => db.collection('boards').doc(b.id));
-    refs.forEach((ref, idx) => batch.update(ref, {priority: idx}));
-    batch.commit();
+    this.store.dispatch(sortBoards({boards}));
   }
 
 }
